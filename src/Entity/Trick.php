@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
-use DateTimeImmutable;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -52,10 +52,10 @@ class Trick
     private ?string $description;
 
     /**
-     * @var DateTimeInterface|DateTimeImmutable|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $createdAt;
+    private DateTimeInterface|null $createdAt;
 
     /**
      * @var DateTimeInterface|null
@@ -71,16 +71,16 @@ class Trick
     private ?User $user;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var ArrayCollection|Collection
      */
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'tricks', cascade: ['persist'])]
-    private Collection $categories;
+    private Collection|ArrayCollection $categories;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var ArrayCollection|Collection
      */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
-    private Collection $comments;
+    private Collection|ArrayCollection $comments;
 
     /**
      * @var string|null
@@ -89,15 +89,15 @@ class Trick
     private ?string $slug;
 
     /**
-     * @var ArrayCollection|Image
+     * @var Collection|Image
      */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
-    private Image|ArrayCollection $images;
+    private Image|Collection $images;
 
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new DateTime();
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();

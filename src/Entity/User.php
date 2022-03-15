@@ -34,11 +34,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 5, minMessage: "Votre mot de passe doit comporter au moins 5 caractères")]
     private string $password;
 
-    /**
-     * @var Collection
-     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
-    private Collection $tricks;
+    private Collection|ArrayCollection $tricks;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private Collection $comments;
@@ -49,14 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private ?bool $isVerified;
 
-    /**
-     * @param ArrayCollection $tricks
-     * @param Collection $comments
-     */
-    public function __construct(ArrayCollection $tricks, Collection $comments)
+    public function __construct()
     {
-        $this->tricks = $tricks;
-        $this->comments = $comments;
+        $this->tricks = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
