@@ -88,9 +88,6 @@ class Trick
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $slug;
 
-    /**
-     * @var Collection|Image
-     */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
     private Image|Collection $images;
 
@@ -297,10 +294,8 @@ class Trick
         return $this;
     }
 
-    /**
-     * @return Image
-     */
-    public function getImages(): Image
+
+    public function getImages(): Collection
     {
         return $this->images;
     }

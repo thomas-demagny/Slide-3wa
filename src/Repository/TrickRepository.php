@@ -4,8 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,10 +20,6 @@ class TrickRepository extends ServiceEntityRepository
         parent::__construct($registry, Trick::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function add(Trick $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -33,11 +28,7 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function remove(Trick $entity, bool $flush = true): void
+   public function remove(Trick $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -45,32 +36,27 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Trick[] Returns an array of Trick objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findTrickByCategory(int $id)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('t.categories', 'ca')
+            ->Where('ca.id = :id')
+            ->setParameter('id', $id)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Trick
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findTrickWithCategories($id)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
+            ->addSelect('ca')
+            ->leftJoin('t.categories', 'ca')
+            ->Where('t.id = :id')
+            ->setParameter('id', $id)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 }

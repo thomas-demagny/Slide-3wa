@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ trick.title }}{% endblock %}
+
+{% block body %}
+    <main class="limiter container">
+        <div class="d-flex justify-content-lg-between">
+            <h1 class="justify-content-start mr-4">Trick</h1>
+            <div class="justify-content-end">
+                {{ include('trick/_delete_form.html.twig') }}</div>
+        </div>
+        <b>Catégorie(s)</b>
+        {%  for category in trick.categories %}
+            {{ category.name}}
+        {% endfor %}
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    <small>Ecrit par</small>
+                </th>
+                <td>{{ trick.user.username }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+
+                <td>{{ trick.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>
+                    {{ trick.description |raw }}
+                </td>
+            </tr>
+
+            {% if trick.createdAt|format_datetime('medium') is same as (trick.updatedAt|format_datetime('medium')) %}
+                <tr>
+                    <th>Crée le</th>
+                    <td>
+                        {{ trick.createdAt|date('d/m/y') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Modifié le</th>
+                    <td>
+                        {{ trick.updatedAt ? trick.updatedAt|date('d/m/y') : '' }}
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+        {% if app.user %}
+            <a href="{{ path('trick_edit', {'id': trick.id}) }}" class="btn btn-info"><i class="fas fa-pencil-alt"></i> Editer</a>
+        {% endif %}
+        <div>
+            <a href="{{ path('home') }}">
+                <i class="fas fa-backward"></i>
+                Retour
+            </a>
+        </div>
+
+        <div class="container">
+            <div class="be-comment-block">
+                <h3 class="comments-title"><i class="far fa-comments"></i> Commentaires ({{ trick.comments | length }})</h3>
+                {%  if app.user %}
+
+                    <div class="row mt-5 justify-content-center mx-3 mx-md-0">
+                        <div class="col-12 col-md-8 ">
+                            {{ form_start(form) }}
+                            {{ form_row(form.content, {label: false}) }}
+                        </div>
+                        <div class="col-12 col-md-3 d-flex align-items-center justify-content-center justify-content-md-start">
+                            <button type="submit" class="btn btn-blue mb-2">Commenter</button>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="text-center mt-5">
+                        <a href="{{ path('app_login') }}" class="btn btn-secondary">Connectez-vous pour commenter</a>
+                    </div>
+
+                {% endif %}
+
+                    {% for comment in trick.comments %}
+                    <div class="be-comment-content">
+
+				<span class="be-comment-name">
+					{{ comment.user.username }}
+					</span>
+                        <span class="be-comment-time">
+					<i class="far fa-clock"></i>
+					{{ comment.createdAt|date('d/m/y') }} à {{ comment.createdAt|date('H:i') }}
+				</span>
+
+                        <p class="be-comment-text">
+                            {{ comment.content }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </main>
+{% endblock %}

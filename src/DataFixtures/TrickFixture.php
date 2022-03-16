@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -111,6 +112,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         foreach (self::TRICKS_DATA as $t => $trickData) {
 
             $trick = new Trick();
+
             $this->initTrick($trick, $trickData);
 
             $manager->persist($trick);
@@ -129,21 +131,23 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
         $usersData = $this->getReference('user' . mt_rand(1, UserFixture::DATA));
         $categoriesData = $this->getReference('category' . mt_rand(0, count(CategoryFixture::CATEGORY_DATA) - 1));
-
+        $images = new Image();
+        $images
+            ->setName('defaultTrickPix.jpg')
+            ->setAlt('default trick');
         $trick
             ->setTitle($trickData['title'])
             ->setDescription($trickData['description'])
             ->setCreatedAt($date)
             ->setUpdatedAt($date)
             ->setUser($usersData)
-        ;
+            ->addImages($images);
 
 
-        for ($i = 0; $i < mt_rand(2, 6); $i++) {
+        for ($ca = 0; $ca < mt_rand(2, 6); $ca++) {
 
-            $trick->addCategory($categoriesData);
-
-
+            $trick
+                ->addCategory($categoriesData);
         }
         return $trick;
     }
