@@ -13,7 +13,7 @@
                     <div class="col-md-10 col-lg-12">
                         <!-- Heading -->
                         <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">
-                            SnowTricks
+                            Slide
                         </h1>
                         <h2 class="my-4 text-bold text-capitalize">
                             Ride your life
@@ -21,7 +21,7 @@
                     </div>
                     <div class="d-flex align-self-end my-5">
                         <a href="#list" class="btn btn-outline-white">
-                            <i class="fas fa-2x fa-arrow-alt-circle-down"></i>
+                            <i class="bi bi-arrow-down-circle-fill"></i>
                         </a>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
     </header>
     <main class="container-fluid mx-auto mt-3 row">
 
-        <nav class="mb-5 mt-5 d-flex justify-content-center">
+        <nav class="mb-5 mt-5 d-flex justify-content-md-center">
             <a href="{{ path('home') }}"
                class="btn btn-info ms-2">
                 Toutes
@@ -52,7 +52,7 @@
                         {% for image in trick.images %}
                         <img src="{{ asset('images/' ~ image.name) }}" class="card-img-top" alt="{{ image.alt }}">
                         {% endfor %}
-                        <a href="{{ path('app_trick_show', {'id': trick.id}) }}" class="text-decoration-none arrow-color">
+                        <a href="{{ path('app_trick_show', {'id': trick.id }) }}" class="text-decoration-none arrow-color">
                             <h5 class="card-title text-center">{{ trick.title }}</h5>
                             {% for category in trick.categories %}
                             {{ category.name }}
@@ -65,18 +65,16 @@
                                     <i class="fas fa-pencil-alt"></i>
                                     Modifier
                                 </a>
+                                {% elseif is_granted("ROLE_ADMIN") %}
                                 {{ include('trick/_delete_form.html.twig') }}
                             {% else %}
-                                <p>Pour modifier/supprimer merci de vous connecter</p>
+                                <a href="{{ path('app_login') }}"> Pour modifier merci de vous connecter</a>
                             {% endif %}
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <button class="btn-info btn-sm">Charger plus d'images</button>
         </section>
-
-
     </main>
     <!--end main-->
 {% endblock %}

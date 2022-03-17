@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,13 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $comments;
 
     #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $createdAt;
+    private ?DateTime $createdAt;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isVerified;
 
     public function __construct()
     {
+        $this->setCreatedAt(new DateTime());
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
