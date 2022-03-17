@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Category;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -22,7 +23,7 @@ class TrickType extends AbstractType
                 'label' => "Titre"
             ])
 
-            ->add('description', TextareaType::class, [
+            ->add('description', CKEditorType::class, [
                 'label' => "Description"
             ])
 
