@@ -5,6 +5,7 @@ body {
     background: url("/public/images/header.jpg") no-repeat;
     background-size: cover;
     color: beige;
+    opacity: 0.5;
 }
 
 li {
