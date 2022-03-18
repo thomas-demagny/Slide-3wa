@@ -3,13 +3,12 @@
 {% block title %}New Trick{% endblock %}
 
 {% block body %}
-    <main class="">
+    <main class="container">
         <h1>Créer un Trick</h1>
 
         {{ include('trick/_form.html.twig') }}
 
-        <a href="{{ path('home') }}" class="btn-sm btn-dark">
-            <i class="fas fa-angle-left mt-3"></i>
+        <a href="{{ path('home') }}" class="btn-sm btn-dark mt-2">
             Retour
         </a>
     </main>

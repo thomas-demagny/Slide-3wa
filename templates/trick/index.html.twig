@@ -12,10 +12,10 @@
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-md-10 col-lg-12">
                         <!-- Heading -->
-                        <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">
+                        <h1 class="display-4 fw-bold text-black pt-5 mb-2">
                             Slide
                         </h1>
-                        <h2 class="my-4 text-bold text-capitalize">
+                        <h2 class="my-4 fw-bold text-black text-capitalize">
                             Ride your life
                         </h2>
                     </div>
@@ -44,6 +44,13 @@
             {% endfor %}
 
         </nav>
+        {% if is_granted('ROLE_USER') %}
+        <div class="d-flex align-self-left mb-5">
+            <a href="{{ path('app_trick_new') }}" class="btn btn-outline-secondary btn-sm">
+                Ajouter un trick
+            </a>
+            {% endif %}
+        </div>
         <!--  Section Tricks -->
         <section id="list">
             <div class="row justify-content-evenly">
