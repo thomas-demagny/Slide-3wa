@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+    <header>
+        <div id="intro" class="jumbotron-fluid">
+
+            <div class="d-flex align-items-center justify-content-center h-100">
+
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-md-10 col-lg-12">
+                        <!-- Heading -->
+                        <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">
+                            Slide
+                        </h1>
+                        <h2 class="my-4 text-bold text-capitalize">
+                            Ride your life
+                        </h2>
+                    </div>
+                    <div class="d-flex align-self-end my-5">
+                        <a href="#list" class="btn btn-outline-white">
+                            <i class="bi bi-arrow-down-circle-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="container-fluid mx-auto mt-3 row">
+
+        <nav class="mb-5 mt-5 d-flex justify-content-md-center">
+            <a href="{{ path('home') }}"
+               class="btn btn-info ms-2">
+                Toutes
+            </a>
+
+            {% for category in categories %}
+                <a href="{{ path('app_trick_category', {id: category.id }) }}"
+                   class="btn btn-{{(loop.index is even) ? 'info' : 'dark' }} ms-2">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+
+        </nav>
+        <!--  Section Tricks -->
+        <section id="list">
+            <div class="row justify-content-evenly">
+                {% for trick in tricks %}
+                    <div class="col-md-2 col-lg-2 mb-5 ms-4" style="width: 18rem;">
+                        {% for image in trick.images %}
+                        <img src="{{ asset('images/' ~ image.name) }}" class="card-img-top" alt="{{ image.alt }}">
+                        {% endfor %}
+                        <a href="{{ path('app_trick_show', {'id': trick.id }) }}" class="text-decoration-none arrow-color">
+                            <h5 class="card-title text-center">{{ trick.title }}</h5>
+                            {% for category in trick.categories %}
+                            {{ category.name }}
+                            {% endfor %}
+                        </a>
+                        <div class="card-footer d-flex justify-content-md-around bg-info">
+                            {% if is_granted("ROLE_USER") %}
+                                <a href="{{ path('app_trick_edit', {'id': trick.id}) }}"
+                                   class="btn btn-sm mr-2">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    Modifier
+                                </a>
+                                {% elseif is_granted("ROLE_ADMIN") %}
+                                {{ include('trick/_delete_form.html.twig') }}
+                            {% else %}
+                                <a href="{{ path('app_login') }}"> Pour modifier merci de vous connecter</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    <!--end main-->
+{% endblock %}
