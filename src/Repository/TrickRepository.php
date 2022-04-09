@@ -52,8 +52,7 @@ class TrickRepository extends ServiceEntityRepository
     public function findTrickWithCategories($id)
     {
         return $this->createQueryBuilder('t')
-            ->addSelect('ca')
-            ->leftJoin('t.categories', 'ca')
+            ->innerJoin('t.categories', 'ca')
             ->Where('t.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
